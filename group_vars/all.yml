@@ -1,0 +1,71 @@
+# add redhat repo
+redhat_repo_extra_packages:
+   - epel-release
+
+#install require packages
+install_all_package_updates: false
+install_packages:
+  - vim-enhanced
+  - telnet
+  - wget
+  - bind-utils
+  - git
+  - net-tools
+  - iftop
+  - htop
+  - atop
+  - lsof
+  - traceroute
+  - bzip2
+  - mlocate
+
+# bash history
+histsize: 100000
+histfilesize: 200000
+histtimeformat: "%h %d %H:%M:%S "
+
+# DNS setting
+nameservers: ['8.8.8.8', '1.1.1.1', '4.2.2.4']
+
+# NTP setting
+ntp_timezone: Asia/Tehran
+ntp_servers:
+  - "0{{ '.' + ntp_area if ntp_area else '' }}.pool.ntp.org iburst"
+  - "1{{ '.' + ntp_area if ntp_area else '' }}.pool.ntp.org iburst"
+  - "2{{ '.' + ntp_area if ntp_area else '' }}.pool.ntp.org iburst"
+  - "3{{ '.' + ntp_area if ntp_area else '' }}.pool.ntp.org iburst"
+ntp_restrict:
+  - "127.0.0.1"
+  - "::1"
+
+# fail2ban setting
+fail2ban_services:
+  - name: sshd
+    port: 22
+    maxretry: 5
+    bantime: -1
+
+# selinux settings 
+selinux_policy: targeted
+selinux_state: permissive
+
+# redhat tuned
+tuned_active_custom_profile:
+  name: custom_profile
+  sections:
+    - name: main
+      params:
+        - option: summary
+          value: tuned main section
+        - option: include
+          value: throughput-performance
+
+# limit config
+limits_domains:
+  - domain: root
+    type: soft
+    item: nofile
+    value: 10000
+sysctl_values:
+  - variable: fs.file-max
+    value: 2048

@@ -1,0 +1,15 @@
+- hosts: all
+  roles:
+    - { role: ansible-role-redhat-repo, tags: "redhat-repo", become: yes }
+    - { role: ansible-role-packages, tags: "install-packages", become: yes }
+    - { role: ansible-role-history, tags: "bash-history", become: yes }
+    - { role: ansible-role-dns, tags: "dns-setting", become: yes }
+    - { role: ansible-role-ntp, tags: "ntp-client-install", become: yes }
+    - { role: ansible-role-fail2ban, tags: "fail2ban-install", become: yes }
+    - { role: ansible-role-selinux, tags: "selinux-set", become: yes }
+    - { role: ansible-system-limits, tags: "system-limits", become: yes }
+    - { role: ansible-role-tuned, tags: "redhat-tuned", become: yes }
+ 
+- hosts: loadbalancer
+  roles: 
+    - { role: ansible-role-nginx, tags: "nginx-install", become: yes }
